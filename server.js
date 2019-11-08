@@ -6,6 +6,7 @@ var socketIO = require('socket.io');
 var app = express();
 var server = http.Server(app);
 var io = socketIO(server);
+var fs = require('fs');
 app.set('port', 5001);
 app.use(express.static('static')); // Routing
 app.get('/', function(request, response) {
@@ -13,7 +14,7 @@ app.get('/', function(request, response) {
 });
 let players = Array();
 let currentDrawer;
-let items = ["Häst", "Katt", "Hund", "Xbox", "Cola", "Åsna", "Obama", "Trump"];
+let items = Array();
 let currentItem = "";
 let playerOrder = 0;
 let playerIndex = 0;
@@ -25,6 +26,12 @@ let item1, item2, item3;
 
 server.listen(5001, function() {
   console.log('Starting server on port 5001');
+  fs.readFile('static/words.txt', 'UTF8', function(err, contents){
+    items = contents.split(';');
+    });
+
+  
+
 });
 
 // När någon joinar spelet så skapar man en ny entry i Arrayen players och håller all speldata om den spelaren där
