@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <script src="http://192.168.216.246:5001/socket.io/socket.io.js" type="text/javascript"></script>
+  <link href="main.css" rel="stylesheet" type="text/css">
+  </link>
+</head>
+
+<body>
+
+  <div id="chooseWindowContainer" class="modal">
+
+    <div id="chooseWindow" class="modalContent">
+
+    </div>
+
+  </div>
+
+  <div id="gameContainer" class="columns">
+
+    <div id="players" class="column10"></div>
+
+    <div id="gameArea" class="column80">
+      <div id="timer" class="hide">30</div>
+      <canvas id="canvas" width="1000px" height="800px" style="border: 2px solid black;padding: 0;margin: auto;display: block;"></canvas>
+    </div>
+
+    <div id="chat" class="column10 right">
+
+      <div id="chatContainer" class="chat">
+        <ul id="messages"></ul>
+      </div>
+      <div id="chatWindow">
+        <input type="text" id="uname">
+        <input type="hidden" id="gissaRuta">
+        <div id="chatButtons">
+          <input type="button" value="Join game" id="game" onclick="join()">
+          <input type="button" value="Clear" onclick="clearClient()">
+          <input type="button" value="Draw" onclick="setdrawer(true)">
+          <input id="ready" type="button" value="Ready" onclick="readyUp()">
+        </div>
+      </diV>
+    </div>
+  </div>
+
+</body>
+<script src="client.js"></script>
+<script src="draw.js"></script>
+
+</html>
