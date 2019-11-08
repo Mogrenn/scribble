@@ -51,7 +51,6 @@ io.on('connection', function(socket) {
   });
 
   socket.on("gissning", function(data) {
-    console.log(playerIndex);
     if (data[0] !== null || data[0] !== "" || data[1] === players[playerIndex].uname) {
       if (data[0] === currentItem && time !== 0) {
 
@@ -72,6 +71,13 @@ io.on('connection', function(socket) {
     } else {
       socket.emit("error", "Du måste skriva något/du får inte gissa om du ritar");
     }
+
+  });
+
+  socket.on("new_color", function(data){
+
+    console.log(data);
+    socket.broadcast.emit("new_color", data);
 
   });
 

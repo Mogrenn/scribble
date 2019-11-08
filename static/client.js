@@ -3,6 +3,7 @@ let gissaRuta = document.getElementById("gissaRuta");
 let gameKnapp = document.getElementById("game");
 let uname;
 var socket = io();
+let color = document.getElementById("colorPicker");
 
 //När man går med i spelet
 function join(){
@@ -145,4 +146,15 @@ socket.on("playerinfo", function(data) {
     headDiv.appendChild(playerinfo);
     playerContainer.appendChild(headDiv);
   });
+});
+
+color.addEventListener("input", function(){
+  socket.emit("new_color", color.value);
+  context.strokeStyle = color.value;
+});
+
+socket.on("new_color", function(data){
+
+  context.strokeStyle = data;
+
 });
