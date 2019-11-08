@@ -81,9 +81,12 @@ io.on('connection', function(socket) {
 
   });
 
+  socket.on("new_width", function(data){
+    socket.broadcast.emit("new_width", data);
+  });
+
   socket.on("new_color", function(data){
 
-    console.log(data);
     socket.broadcast.emit("new_color", data);
 
   });
