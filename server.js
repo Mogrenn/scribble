@@ -60,13 +60,34 @@ io.on('connection', function(socket) {
   });
 
   socket.on("gissning", function(data) {
+<<<<<<< HEAD
+    if (data[0] !== null || data[0] !== "" || data[1] !== currentDrawer.name) {
+=======
     if (data[0] !== null || data[0] !== "" || data[1] !== currentDrawer.uname) {
+>>>>>>> 2d99b92ee89ac2431b88661fb20f38342dd26261
       if (data[0] === currentItem && time !== 0) {
 
         for (const [index, element] of players.entries()) {
 
-          if (element.ID === socket.id && element.id !== null) {
-            players[index].points += playersLeft;
+          if (element.ID === socket.id && element.ID !== null) {
+
+            if(time >= 25){
+              players[index].points += 500;
+              currentDrawer.points += 500/2;
+            }else if(time >= 20){
+              players[index].points += 400;
+              currentDrawer.points += 400/2;
+            }else if(time >= 15){
+              players[index].points += 300;
+              currentDrawer.points += 300/2;
+            }else if(time >= 10){
+              players[index].points += 200;
+              currentDrawer.points += 200/2;
+            }else{
+              players[index].points += 100;
+              currentDrawer.points += 100/2;
+            }
+
             io.emit("correct", data[1] + " : Gissade rätt");
             io.emit("playerinfo", getPlayers());
             currentItem = "";
@@ -117,7 +138,6 @@ io.on('connection', function(socket) {
     }
 
     if (ok) {
-      console.log("Lets go");
       start();
     } else {
 
@@ -252,6 +272,7 @@ function start() {
     }
 
     players[playerIndex].drawer = true;
+    currentDrawer = players[playerIndex];
     io.emit("playerinfo", getPlayers());
     playersLeft = players.length - 1;
     getRandomItem();
@@ -266,7 +287,7 @@ function start() {
 }
 
 function getRandomItem(){
-  console.log(items.length);
+
   item1 = Math.floor(Math.random()*items.length);
 
   while(true){
@@ -282,7 +303,6 @@ function getRandomItem(){
       break;
     }
   }
-  console.log(item1+" : "+item2+" : "+item3);
 }
 
 //retunerar en lista med alla players
