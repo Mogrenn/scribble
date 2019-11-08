@@ -20,6 +20,7 @@ let playerOrder = 0;
 let playerIndex = 0;
 let playersPlaying;
 let time;
+let cooldown;
 let waitingForItem = false;
 let playersLeft;
 let item1, item2, item3;
@@ -31,7 +32,7 @@ server.listen(5001, function() {
     items = contents.split(';');
     });
 
-
+  
 
 });
 
@@ -59,7 +60,11 @@ io.on('connection', function(socket) {
   });
 
   socket.on("gissning", function(data) {
+<<<<<<< HEAD
     if (data[0] !== null || data[0] !== "" || data[1] !== currentDrawer.name) {
+=======
+    if (data[0] !== null || data[0] !== "" || data[1] !== currentDrawer.uname) {
+>>>>>>> 2d99b92ee89ac2431b88661fb20f38342dd26261
       if (data[0] === currentItem && time !== 0) {
 
         for (const [index, element] of players.entries()) {
@@ -105,6 +110,7 @@ io.on('connection', function(socket) {
 
   socket.on("new_color", function(data){
 
+    console.log(data);
     socket.broadcast.emit("new_color", data);
 
   });
@@ -185,6 +191,7 @@ io.on('connection', function(socket) {
 //Sköter rund klockan så att man kan se hur mycket tid det är kvar
 function timer() {
   time = 30;
+  cooldown = 5;
   setInterval(function() {
     if (time >= 0 && playersLeft > 0) {
       io.emit('timer', time);
@@ -193,14 +200,32 @@ function timer() {
 
       clearInterval(this);
       playerIndex++;
-      rounds++;
-      start();
-
+      setInterval(function(){
+        io.emit('timer', cooldown);
+        cooldown--;
+        if(cooldown == 0){
+          clearInterval(this);
+          io.emit('clear');
+          rounds++;
+          start();
+        }
+      }, 1000);
+      
     } else {
       clearInterval(this);
       playerIndex++;
-      rounds++;
-      start();
+      setInterval(function(){
+        io.emit('timer', cooldown);
+        cooldown--;
+        if(cooldown == 0){
+          clearInterval(this);
+          io.emit('clear');
+          rounds++;
+          start();
+        }
+      }, 1000);
+      
+      
     }
 
   }, 1000);
