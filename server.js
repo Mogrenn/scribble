@@ -60,7 +60,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on("gissning", function(data) {
-    if (data[0] !== null || data[0] !== "" || data[1] === players[playerIndex].uname) {
+    if (data[0] !== null || data[0] !== "" || data[1] !== currentDrawer.uname) {
       if (data[0] === currentItem && time !== 0) {
 
         for (const [index, element] of players.entries()) {
@@ -186,6 +186,7 @@ function timer() {
         if(cooldown == 0){
           clearInterval(this);
           io.emit('clear');
+          rounds++;
           start();
         }
       }, 1000);
@@ -199,7 +200,7 @@ function timer() {
         if(cooldown == 0){
           clearInterval(this);
           io.emit('clear');
-
+          rounds++;
           start();
         }
       }, 1000);
@@ -227,11 +228,26 @@ function start() {
 
   } else {
 
+    if(players.length*5 === rounds){
+
+      let best;
+
+      for(let element of players){
+
+        if(best === null || element.points > best.points){
+          best = element;
+        }
+      }
+
+      io.emit("winner", best.uname);
+
+    }else{
+
     for(element of players){
       element.drawer = false;
     }
 
-    if(playerIndex > players.length){
+    if(playerIndex >= players.length){
       playerIndex = 0;
     }
 
@@ -245,6 +261,7 @@ function start() {
     io.to(players[playerIndex].ID).emit("alternativ", alternativ);
 
   }
+}
 
 }
 
