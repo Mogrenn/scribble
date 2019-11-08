@@ -177,13 +177,13 @@ function timer() {
 
       clearInterval(this);
       playerIndex++;
-
+      rounds++;
       start();
 
     } else {
       clearInterval(this);
       playerIndex++;
-
+      rounds++;
       start();
     }
 
@@ -207,11 +207,26 @@ function start() {
 
   } else {
 
+    if(players.length*5 === rounds){
+
+      let best;
+
+      for(let element of players){
+
+        if(best === null || element.points > best.points){
+          best = element;
+        }
+      }
+
+      io.emit("winner", best.uname);
+
+    }else{
+
     for(element of players){
       element.drawer = false;
     }
 
-    if(playerIndex > players.length){
+    if(playerIndex >= players.length){
       playerIndex = 0;
     }
 
@@ -225,6 +240,7 @@ function start() {
     io.to(players[playerIndex].ID).emit("alternativ", alternativ);
 
   }
+}
 
 }
 
