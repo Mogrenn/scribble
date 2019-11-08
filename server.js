@@ -59,7 +59,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on("gissning", function(data) {
-    if (data[0] !== null || data[0] !== "" || data[1] === players[playerIndex].uname) {
+    if (data[0] !== null || data[0] !== "" || data[1] !== currentDrawer.uname) {
       if (data[0] === currentItem && time !== 0) {
 
         for (const [index, element] of players.entries()) {
