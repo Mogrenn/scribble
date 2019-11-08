@@ -127,6 +127,7 @@ socket.on("playerinfo", function(data) {
   let headDiv;
   let playerinfo;
   playerContainer.innerHTML = "";
+  drawer = false;
 
   data.forEach(function(element){
     headDiv = document.createElement("div");

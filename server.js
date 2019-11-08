@@ -23,6 +23,7 @@ let time;
 let waitingForItem = false;
 let playersLeft;
 let item1, item2, item3;
+let rounds = 0;
 
 server.listen(5001, function() {
   console.log('Starting server on port 5001');
@@ -177,13 +178,13 @@ function timer() {
       clearInterval(this);
       playerIndex++;
 
-      //start();
+      start();
 
     } else {
       clearInterval(this);
       playerIndex++;
 
-      //start();
+      start();
     }
 
   }, 1000);
@@ -194,8 +195,9 @@ function timer() {
 //playersLeft = players.length - 1; -1 är för att man ska räkna bort den som ritar
 function start() {
 
-  if (currentDrawer == null) {
+  if (currentDrawer === null) {
     players[0].drawer = true;
+    currentDrawer = players[0];
     io.emit("playerinfo", getPlayers());
     playersLeft = players.length - 1;
     getRandomItem();
@@ -207,6 +209,10 @@ function start() {
 
     for(element of players){
       element.drawer = false;
+    }
+
+    if(playerIndex > players.length){
+      playerIndex = 0;
     }
 
     players[playerIndex].drawer = true;
