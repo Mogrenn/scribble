@@ -158,3 +158,14 @@ socket.on("new_color", function(data){
   context.strokeStyle = data;
 
 });
+
+function changeWidth(){
+
+  context.lineWidth = document.getElementById("lineWidth").value;
+  socket.emit("new_width", document.getElementById("lineWidth").value);
+
+}
+
+socket.on("new_width", function(data){
+  context.lineWidth = data;
+});
