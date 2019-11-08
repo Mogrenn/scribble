@@ -1,5 +1,4 @@
 //roll 0 = gissare, roll 1 = han som ritar
-
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -14,7 +13,7 @@ app.get('/', function(request, response) {
 });
 let players = Array();
 let currentDrawer;
-let items = ["Häst", "Katt", "Hund"];
+let items = ["Häst", "Katt", "Hund", "Xbox", "Cola", "Åsna", "Obama", "Trump"];
 let currentItem = "";
 let playerOrder = 0;
 let playerIndex = 0;
@@ -22,6 +21,7 @@ let playersPlaying;
 let time;
 let waitingForItem = false;
 let playersLeft;
+let item1, item2, item3;
 
 server.listen(5001, function() {
   console.log('Starting server on port 5001');
@@ -51,7 +51,8 @@ io.on('connection', function(socket) {
   });
 
   socket.on("gissning", function(data) {
-    if (data[0] !== null || data[0] !== "" || data[1] === players[playerIndex]) {
+    console.log(playerIndex);
+    if (data[0] !== null || data[0] !== "" || data[1] === players[playerIndex].uname) {
       if (data[0] === currentItem && time !== 0) {
 
         for (const [index, element] of players.entries()) {
@@ -158,27 +159,31 @@ function timer() {
     }else if(playersLeft === 0){
 
       clearInterval(this);
+      playerIndex++;
+
+      //start();
 
     } else {
       clearInterval(this);
+      playerIndex++;
+
+      //start();
     }
 
   }, 1000);
 
-  playerIndex++;
-
-  start();
-
 }
 
 //Det är här som spelet väljer vem som ska rita och vad den får välja på
+//playersLeft = players.length - 1; -1 är för att man ska räkna bort den som ritar
 function start() {
 
   if (currentDrawer == null) {
-    players[playerIndex].drawer = true;
+    players[0].drawer = true;
     io.emit("playerinfo", getPlayers());
     playersLeft = players.length - 1;
-    let alternativ = [items[0], items[1], items[2]];
+    getRandomItem();
+    let alternativ = [items[item1], items[item2], items[item3]];
     waitingForItem = true;
     io.to(players[0].ID).emit("alternativ", alternativ);
 
@@ -191,12 +196,34 @@ function start() {
     players[playerIndex].drawer = true;
     io.emit("playerinfo", getPlayers());
     playersLeft = players.length - 1;
-    let alternativ = [items[0], items[1], items[2]];
+    getRandomItem();
+
+    let alternativ = [items[item1], items[item2], items[item3]];
     waitingForItem = true;
-    io.to(players[0].ID).emit("alternativ", alternativ);
+    io.to(players[playerIndex].ID).emit("alternativ", alternativ);
 
   }
 
+}
+
+function getRandomItem(){
+  console.log(items.length);
+  item1 = Math.floor(Math.random()*items.length);
+
+  while(true){
+    item2 = Math.floor(Math.random()*items.length);
+    if(item2 !== item1){
+      break;
+    }
+  }
+
+  while(true){
+    item3 = Math.floor(Math.random()*items.length);
+    if(item3 !== item1 && item3 !== item2){
+      break;
+    }
+  }
+  console.log(item1+" : "+item2+" : "+item3);
 }
 
 //retunerar en lista med alla players
