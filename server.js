@@ -226,7 +226,7 @@ function start() {
       element.drawer = false;
     }
 
-    if(playerIndex > players.length){
+    if(playerIndex >= players.length){
       playerIndex = 0;
     }
 
