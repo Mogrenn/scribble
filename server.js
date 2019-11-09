@@ -32,7 +32,7 @@ server.listen(5001, function() {
     items = contents.split(';');
     });
 
-  
+
 
 });
 
@@ -60,11 +60,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on("gissning", function(data) {
-<<<<<<< HEAD
     if (data[0] !== null || data[0] !== "" || data[1] !== currentDrawer.name) {
-=======
-    if (data[0] !== null || data[0] !== "" || data[1] !== currentDrawer.uname) {
->>>>>>> 2d99b92ee89ac2431b88661fb20f38342dd26261
       if (data[0] === currentItem && time !== 0) {
 
         for (const [index, element] of players.entries()) {
@@ -110,7 +106,6 @@ io.on('connection', function(socket) {
 
   socket.on("new_color", function(data){
 
-    console.log(data);
     socket.broadcast.emit("new_color", data);
 
   });
@@ -210,7 +205,7 @@ function timer() {
           start();
         }
       }, 1000);
-      
+
     } else {
       clearInterval(this);
       playerIndex++;
@@ -224,8 +219,8 @@ function timer() {
           start();
         }
       }, 1000);
-      
-      
+
+
     }
 
   }, 1000);
